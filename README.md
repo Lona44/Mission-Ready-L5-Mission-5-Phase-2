@@ -25,8 +25,6 @@ Build complete Trade Me marketplace with UX team designs:
 
 ## Team Structure
 
-**Tech Lead:** Responsible for shared components, backend API, architecture, and code review
-
 **Dev 1:** Home/Browse page + navigation system
 - Marketplace grid layout
 - Search and filter UI
@@ -154,7 +152,7 @@ git commit -m "Description of changes"
 git push origin feature/your-feature-name
 ```
 
-5. **Request review from Tech Lead**
+5. **Request review from team members**
 
 ## Branch Strategy
 
@@ -201,7 +199,7 @@ See `docs/UI-KIT.md` for full design system.
 
 ## Shared Components
 
-Built and maintained by Tech Lead. Do not modify without approval.
+Reusable components available for all developers. Discuss changes in Teams chat before modifying.
 
 - `<Navbar>` - Site navigation header
 - `<Footer>` - Site footer with links
@@ -232,6 +230,7 @@ TBD - Will be deployed to production environment after team development is compl
 
 ## Contact
 
-Tech Lead: [Your contact information]
-
-For questions or issues, create a GitHub issue or contact the tech lead directly.
+For questions or issues:
+- Post in **Teams chat: "Group 2.0 Mission 5"**
+- Create a GitHub issue
+- Tag relevant team members in PR comments

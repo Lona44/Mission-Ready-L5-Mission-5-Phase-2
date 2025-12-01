@@ -36,7 +36,7 @@ Branch naming convention:
 **Rules:**
 - Only modify files in your assigned directory
 - Use shared components from `/components/shared/`
-- Do NOT modify shared components without Tech Lead approval
+- Do NOT modify shared components without discussing in Teams chat first
 - Follow the UI Kit colors and typography
 - Write mobile-first responsive CSS
 
@@ -117,7 +117,7 @@ Then create a Pull Request on GitHub:
 2. Click "Pull Requests" → "New Pull Request"
 3. Select your branch
 4. Write a clear description of changes
-5. Request review from Tech Lead
+5. Request review from team members
 
 ## Pull Request Template
 
@@ -145,15 +145,16 @@ Closes #issue-number (if applicable)
 
 ## Code Review Process
 
-1. Tech Lead reviews all PRs
-2. Requested changes must be addressed
-3. Approved PRs are merged to `develop` branch
-4. After testing, `develop` is merged to `main`
+1. Team members review each other's PRs
+2. At least one approval required before merge
+3. Requested changes must be addressed
+4. Approved PRs are merged to `develop` branch
+5. After testing, `develop` is merged to `main`
 
 ## Things NOT to Do
 
-❌ **Do NOT modify shared components** without approval
-❌ **Do NOT change backend API** without discussing with Tech Lead
+❌ **Do NOT modify shared components** without team discussion
+❌ **Do NOT change backend API** without discussing in Teams chat first
 ❌ **Do NOT commit node_modules** or build files
 ❌ **Do NOT work directly on main branch**
 ❌ **Do NOT merge your own PRs**
@@ -162,14 +163,14 @@ Closes #issue-number (if applicable)
 
 ## File Ownership
 
-### Tech Lead Owns:
+### Shared (discuss changes in Teams):
 - `/components/shared/` - All shared components
 - `/services/` - API client and utilities
 - `/styles/theme.js` - UI Kit theme
 - `/auction-backend/` - Backend API
 - Documentation files
 
-### Developers Own:
+### Individual Developer Areas:
 - Dev 1: `/components/home/` and `/pages/HomePage.jsx`
 - Dev 2: `/components/product/` and `/pages/ProductDetailPage.jsx`
 - Dev 3: `/components/comparison/` and `/pages/ComparisonPage.jsx`
@@ -183,15 +184,15 @@ If you encounter merge conflicts:
 4. Commit the resolution
 5. Push and update your PR
 
-If unsure, ask Tech Lead for help.
+If unsure, ask for help in the Teams chat.
 
 ## Getting Help
 
 - Check documentation in `/docs/` first
 - Search existing GitHub issues
-- Ask in team communication channel
-- Tag Tech Lead in PR comments
-- Schedule code review session
+- Ask in **Teams chat: "Group 2.0 Mission 5"**
+- Tag team members in PR comments
+- Schedule team review sessions
 
 ## Code Style
 
@@ -235,6 +236,6 @@ function ProductCard(props) {
 
 ## Questions?
 
-Contact Tech Lead or create a GitHub issue tagged with `question`.
+Post in **Teams chat: "Group 2.0 Mission 5"** or create a GitHub issue tagged with `question`.
 
 Happy coding!
