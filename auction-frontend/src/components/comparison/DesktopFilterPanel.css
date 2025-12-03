@@ -8,7 +8,7 @@
   font-size: 13px;
 }
 
-/* 小标题 */
+
 .desktop-filter-panel section + section {
   margin-top: 16px;
 }
@@ -21,14 +21,14 @@
   color: #555;
 }
 
-/* chip 组 */
+
 .chip-group {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
 }
 
-/* chip 基本样式 */
+
 .chip,
 .chip-selected {
   padding: 4px 10px;
@@ -39,14 +39,13 @@
   cursor: pointer;
 }
 
-/* 选中状态（Trade Me 蓝） */
+
 .chip-selected {
   border-color: #0079d3;
   background-color: #0079d3;
   color: #fff;
 }
 
-/* 价格输入框 */
 .desktop-filter-panel input[type="number"] {
   width: 100px;
   padding: 4px 6px;
@@ -59,7 +58,6 @@
   margin-left: 6px;
 }
 
-/* 移动端隐藏 Panel，由 Modal 接管 */
 @media (max-width: 768px) {
   .desktop-filter-panel {
     display: none;

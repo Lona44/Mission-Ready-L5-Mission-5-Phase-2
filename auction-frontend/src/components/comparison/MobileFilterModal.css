@@ -1,4 +1,4 @@
-/* 覆盖整个屏幕的遮罩层 */
+
 .mobile-filter-modal {
   position: fixed;
   inset: 0;
@@ -10,12 +10,12 @@
   align-items: flex-end;
 }
 
-/* 白色内容区域（从底部滑上来的感觉） */
+
 .mobile-filter-modal .modal-body-wrapper {
   width: 100%;
 }
 
-/* 为了简化，直接给整体内容一个容器 */
+
 .mobile-filter-modal .modal-content {
   background-color: #fff;
   max-height: 90vh;
@@ -46,7 +46,7 @@
   cursor: pointer;
 }
 
-/* Section 样式 */
+
 .mobile-filter-modal section {
   margin-top: 12px;
 }
@@ -57,7 +57,7 @@
   font-weight: 600;
 }
 
-/* chip 组（与桌面共享类名） */
+
 .mobile-filter-modal .chip-group {
   display: flex;
   flex-wrap: wrap;
@@ -80,7 +80,7 @@
   color: #fff;
 }
 
-/* Radio 列表 */
+
 .mobile-filter-modal label {
   display: flex;
   align-items: center;
@@ -89,7 +89,7 @@
   margin-bottom: 4px;
 }
 
-/* 底部 Apply 按钮条 */
+
 .mobile-filter-modal .apply-btn {
   position: fixed;
   left: 0;
@@ -104,7 +104,7 @@
   cursor: pointer;
 }
 
-/* 桌面隐藏 Modal，只在移动端用 */
+
 @media (min-width: 769px) {
   .mobile-filter-modal {
     display: none;

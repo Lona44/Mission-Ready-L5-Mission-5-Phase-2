@@ -1,0 +1,84 @@
+.cmp-item {
+  display: flex;
+  background: #ffffff;
+  border-radius: 6px;
+  padding: 14px;
+  border: 1px solid #e6e6e6;
+  margin-bottom: 18px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* --- Left Image --- */
+.cmp-item__img img {
+  width: 150px;
+  height: 150px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+/* --- Middle Section --- */
+.cmp-item__content {
+  flex: 1;
+  padding: 0 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cmp-item__location {
+  color: #666;
+  font-size: 13px;
+}
+
+.cmp-item__title {
+  font-size: 17px;
+  font-weight: 600;
+  color: #222;
+  margin: 6px 0;
+}
+
+.cmp-item__reserve {
+  font-size: 14px;
+  color: #444;
+  margin-top: 4px;
+}
+
+/* Add note button */
+.cmp-item__note-btn {
+  background: none;
+  border: none;
+  color: #1a73e8;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0;
+  margin-top: 10px;
+}
+
+/* --- Right section (tick + price) --- */
+.cmp-item__right {
+  width: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+/* Yellow tick */
+.cmp-item__check {
+  background: #f9af2c;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Price text */
+.cmp-item__price {
+  font-size: 16px;
+  font-weight: 600;
+  color: #222;
+}

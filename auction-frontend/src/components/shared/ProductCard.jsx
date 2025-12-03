@@ -23,6 +23,7 @@ export default function ProductCard({ product, showBookmark = false, onBookmarkC
     reserve_price,
   } = product;
 
+  
   return (
     <div className="product-card">
       {showBookmark && (
@@ -37,9 +38,18 @@ export default function ProductCard({ product, showBookmark = false, onBookmarkC
         </button>
       )}
 
-      <div className="product-card__image-placeholder">
-        {/* Image gallery will be added in Phase 2 */}
-        <div className="product-card__placeholder-text">No Image</div>
+      <div className="product-card__image">
+        {product.image ? (
+          <img 
+            src={product.image} 
+            alt={title}
+            className="product-card__image-tag"
+          />
+        ) : (
+          <div className="product-card__image-placeholder">
+            <div className="product-card__placeholder-text">No Image</div>
+          </div>
+        )}
       </div>
 
       <div className="product-card__content">

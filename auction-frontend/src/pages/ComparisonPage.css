@@ -1,10 +1,118 @@
+/* --- Page Wrapper --- */
+
+.comparison-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.comparison-page {
+  width: 80%;
+  max-width: 1100px;
+  margin: 20px auto 60px auto;
+}
+/* --- Title --- */
+.comparison-title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.comparison-note {
+  background: #f7e4c2;
+  border-left: 4px solid #e0b06d;
+  padding: 10px 12px;
+  margin-bottom: 18px;
+  border-radius: 4px;
+  line-height: 1.4;
+}
+/* --- Search Bar Row --- */
+.search-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.search-row input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.search-btn {
+  padding: 10px 20px;
+  background: #eaeaea;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.filter-btn-desktop {
+  padding: 10px 20px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.cmp-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+/* Search Input */
+.cmp-search-input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+/* Search Button */
+.cmp-search-btn {
+  padding: 8px 16px;
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Filters Button */
+.cmp-filters-btn {
+  background-color: #0077cc;
+  border: none;
+  color: white;
+  padding: 8px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* --- NOTE Section --- */
+.cmp-note {
+  background-color: #fdebc8;
+  color: #333;
+  padding: 14px 16px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  border-left: 4px solid #f0c06d;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
 .comparison-page {
   max-width: 1200px;
   margin: 0 auto;
   padding: 16px;
 }
 
-/* 顶部 Search + Filter */
+/* Top Search + Filter */
 .comparison-header {
   display: flex;
   align-items: center;
@@ -20,7 +128,7 @@
   font-size: 14px;
 }
 
-/* Filter 按钮（桌面 & 移动通用基础样式） */
+/* Filter  */
 .filter-btn-desktop,
 .filter-btn-mobile {
   padding: 8px 16px;
@@ -38,14 +146,14 @@
   background-color: #005ea8;
 }
 
-/* 布局：左 Filter + 右 List（桌面） */
+/* Grid：left Filter + right List（table） */
 .comparison-body {
   display: flex;
   align-items: flex-start;
   gap: 16px;
 }
 
-/* 右侧列表区域 */
+/* Left side */
 .comparison-list {
   flex: 1;
   display: flex;
@@ -53,14 +161,28 @@
   gap: 8px;
 }
 
-/* 让 ProductCard 占满宽度、列表风格 */
+
 .comparison-list .product-card {
   width: 100%;
 }
 
-/* ---------- 响应式 ---------- */
+.breadcrumb {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 10px;
+}
 
-/* 桌面：显示左侧 panel 和桌面按钮，隐藏 mobile 按钮 */
+.breadcrumb a {
+  color: #1a73e8;
+  text-decoration: none;
+}
+
+.breadcrumb .current {
+  color: #999;
+}
+
+
+
 @media (min-width: 769px) {
   .filter-btn-desktop {
     display: inline-block;
@@ -71,7 +193,7 @@
   }
 }
 
-/* 移动：Filter Panel 不占左侧，使用 Modal；显示 mobile 按钮 */
+
 @media (max-width: 768px) {
   .comparison-page {
     padding: 8px;
@@ -89,3 +211,4 @@
     display: inline-block;
   }
 }
+

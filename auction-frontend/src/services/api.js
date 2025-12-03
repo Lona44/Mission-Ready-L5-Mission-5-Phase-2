@@ -6,7 +6,7 @@
  */
 
 const API_BASE_URL = 'http://localhost:3000/api';
-
+console.log(">>> api.js LOADED, BASE URL =", API_BASE_URL);
 /**
  * Generic fetch wrapper with error handling
  */

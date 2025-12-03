@@ -4,7 +4,7 @@ import "./ComparisonPage.css";
 
 import DesktopFilterPanel from "../components/comparison/DesktopFilterPanel.jsx";
 import MobileFilterModal from "../components/comparison/MobileFilterModal.jsx";
-import ProductCard from "../components/shared/ProductCard.jsx";
+import ComparisonItem from "../components/comparison/ComparisonItem.jsx";
 
 import { getAuctions } from "../services/api.js";
 
@@ -36,15 +36,24 @@ export default function ComparisonPage() {
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     async function load() {
-      if (!idsArray.length) return;
-
       setLoading(true);
 
       try {
-        const res = await getAuctions({
-          ids: idsArray.join(","),
-          ...filters
-        });
+        let res;
+
+        if (idsArray.length > 0) {
+          // Mode 1: comparison mode
+          res = await getAuctions({
+            ids: idsArray.join(","),
+            ...filters
+          });
+        } else {
+          // Mode 2: browsing mode → get all products
+          res = await getAuctions({
+            ...filters
+          });
+        }
+
         setItems(res.data);
       } catch (err) {
         console.error("Comparison fetch error:", err);
@@ -60,71 +69,104 @@ export default function ComparisonPage() {
   const handleRemove = (removeId) => {
     const newIds = idsArray.filter((id) => id !== removeId);
     const newQuery = newIds.join(",");
-    window.location.href = `/comparison?ids=${newQuery}`;
+    
+    if (newIds.length === 0) {
+      // No comparison → show all products
+      window.location.href = `/comparison`;
+    } else {
+      window.location.href = `/comparison?ids=${newQuery}`;
+    }
   };
 
   return (
-    <div className="comparison-page">
+    <div className="comparison-container">     
+      <div className="comparison-page">
+        {/* Breadcrumb */}
+        <nav className="breadcrumb">
+          <a href="/">Home</a>
+          <span>/</span>
+          <a href="/my-trademe">My TradeMe</a>
+          <span>/</span>
+          <span className="current">Compare</span>
+        </nav>
 
-      {/* --- Search + Filter Bar --- */}
-      <div className="comparison-header">
-        <input
-          type="text"
-          placeholder="Search to filter items..."
-          value={filters.q}
-          onChange={(e) => setFilters({ ...filters, q: e.target.value })}
-        />
+        <h1 className="comparison-title">Comparison Tool</h1>
 
-        {/* Desktop filter button */}
-        <button 
-          className="filter-btn-desktop" 
-          onClick={() => setShowDesktopFilter(!showDesktopFilter)}
-        >
-          Filter
-        </button>
+        <div className="search-row">
+          <input
+            type="text"
+            placeholder="Search all of trade me"
+            value={filters.q}
+            onChange={(e) => setFilters({ ...filters, q: e.target.value })}
+          />
+          <button className="search-btn">Search</button>
+          <button className="filter-btn-desktop">Filters</button>
+        </div>
 
-        {/* Mobile filter button */}
-        <button 
-          className="filter-btn-mobile"
-          onClick={() => setShowMobileFilter(true)}
-        >
-          Filter
-        </button>
-      </div>
+        <div className="comparison-note">
+          <strong>NOTE:</strong> Search for the item you want to compare <br />
+          Make sure to use the Filter system to find a product that fits your preference
+        </div>
+        {/* --- Search + Filter Bar --- */}
+        <div className="comparison-header">
+          <input
+            type="text"
+            placeholder="Search to filter items..."
+            value={filters.q}
+            onChange={(e) => setFilters({ ...filters, q: e.target.value })}
+          />
 
-      <div className="comparison-body">
+          {/* Desktop filter button */}
+          <button 
+            className="filter-btn-desktop" 
+            onClick={() => setShowDesktopFilter(!showDesktopFilter)}
+          >
+            Filter
+          </button>
 
-        {/* Desktop filter panel */}
-        {showDesktopFilter && (
-          <DesktopFilterPanel
+          {/* Mobile filter button */}
+          <button 
+            className="filter-btn-mobile"
+            onClick={() => setShowMobileFilter(true)}
+          >
+            Filter
+          </button>
+        </div>
+
+        <div className="comparison-body">
+
+          {/* Desktop filter panel */}
+          {showDesktopFilter && (
+            <DesktopFilterPanel
+              filters={filters}
+              setFilters={setFilters}
+            />
+          )}
+
+          {/* Product list */}
+          <div className="comparison-list">
+            {loading && <p>Loading...</p>}
+
+            {!loading && items.filter(item => item).map((item) => (
+              <ComparisonItem 
+                key={item._id}
+                product={item}
+                onRemove={() => handleRemove(item._id)}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Mobile Filter Modal */}
+        {showMobileFilter && (
+          <MobileFilterModal
             filters={filters}
             setFilters={setFilters}
+            onClose={() => setShowMobileFilter(false)}
           />
         )}
 
-        {/* Product list */}
-        <div className="comparison-list">
-          {loading && <p>Loading...</p>}
-
-          {!loading && items.map((item) => (
-            <ProductCard 
-              key={item._id}
-              product={item}
-              onRemove={() => handleRemove(item._id)}
-            />
-          ))}
-        </div>
       </div>
-
-      {/* Mobile Filter Modal */}
-      {showMobileFilter && (
-        <MobileFilterModal
-          filters={filters}
-          setFilters={setFilters}
-          onClose={() => setShowMobileFilter(false)}
-        />
-      )}
-
     </div>
   );
 }
