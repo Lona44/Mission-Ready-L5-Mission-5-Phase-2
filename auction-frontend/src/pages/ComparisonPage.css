@@ -1,0 +1,91 @@
+.comparison-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* 顶部 Search + Filter */
+.comparison-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.comparison-header input[type="text"] {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid #d4d4d4;
+  border-radius: 3px;
+  font-size: 14px;
+}
+
+/* Filter 按钮（桌面 & 移动通用基础样式） */
+.filter-btn-desktop,
+.filter-btn-mobile {
+  padding: 8px 16px;
+  border-radius: 3px;
+  border: 1px solid #0079d3;
+  background-color: #0079d3;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.filter-btn-desktop:hover,
+.filter-btn-mobile:hover {
+  background-color: #005ea8;
+}
+
+/* 布局：左 Filter + 右 List（桌面） */
+.comparison-body {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+/* 右侧列表区域 */
+.comparison-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* 让 ProductCard 占满宽度、列表风格 */
+.comparison-list .product-card {
+  width: 100%;
+}
+
+/* ---------- 响应式 ---------- */
+
+/* 桌面：显示左侧 panel 和桌面按钮，隐藏 mobile 按钮 */
+@media (min-width: 769px) {
+  .filter-btn-desktop {
+    display: inline-block;
+  }
+
+  .filter-btn-mobile {
+    display: none;
+  }
+}
+
+/* 移动：Filter Panel 不占左侧，使用 Modal；显示 mobile 按钮 */
+@media (max-width: 768px) {
+  .comparison-page {
+    padding: 8px;
+  }
+
+  .comparison-body {
+    display: block;
+  }
+
+  .filter-btn-desktop {
+    display: none;
+  }
+
+  .filter-btn-mobile {
+    display: inline-block;
+  }
+}
