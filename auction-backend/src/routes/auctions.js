@@ -6,9 +6,33 @@ const router = express.Router();
 // GET /api/auctions - Get all auctions with optional filters
 router.get('/', async (req, res) => {
   try {
-    const { minPrice, maxPrice, limit = 10 } = req.query; // Whoops magic numbers, need to fix
+
+    // Extract all supported query parameters for filtering & sorting
+    const {
+      q,                //Keyword search
+      category,          
+      location,
+      colour,
+      minPrice,
+      maxPrice,
+      sort = "latest",   //Sorting mode (latest, priceAsc, priceDesc, bestmatch)
+      ids,               //Comma-separated auction IDs (comparison tool)
+      limit = 20         //Max number of results to return (default: 20)
+    } = req.query;
 
     let query = {};
+
+    // Keyword search ( used for best match too)
+    if(q) {
+      query.$or = [
+        { title: {$regex: q, $options: 'i'} },
+        { description: { $regex: q, $options: 'i'} }
+      ];
+    }
+
+    if (category) query.category = category;
+    if (location) query.location = location;
+    if (colour) query.colour = colour;
 
     // Price filtering
     if (minPrice || maxPrice) {
@@ -17,9 +41,71 @@ router.get('/', async (req, res) => {
       if (maxPrice) query.start_price.$lte = Number(maxPrice);
     }
 
+    // For comparison tool Ids
+    if (ids) {
+      query._id = { $in: ids.split(',') };
+    }
+
+    // Best match sorting ( use aggregation pipeline)
+    if (sort === "bestmatch") {
+
+      //If no keyword, fallback to latest
+      if(!q) {
+        const auctions = await Auction.find(query)
+          .sort({ createdAt: -1 })
+          .limit(Number(limit));
+
+        return res.json({
+          success: true,
+          count: auctions.length,
+          data: auctions
+        });
+      }
+
+      //When q exists -> compute relevance score
+      const auctions = await Auction.aggregate([
+        { $match: query },
+        {
+          $addFields: {
+            score: {
+              $cond: [
+                { $regexMatch: { input: "$title", regex: q, options: "i" } },
+                2,
+                {
+                  $cond: [
+                    { $regexMatch: { input: "$description", regex: q, options: "i"} },
+                    1,
+                    0
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        { $sort: { score: -1, createdAt: -1 }},
+        { $limit: Number(limit) }
+      ]);
+
+      return res.json({
+        success: true,
+        sortMode: "bestmatch",
+        count: auctions.length,
+        data: auctions
+      });
+    }
+
+    //Normal Sorting
+    const sortOptions = {
+      latest: { createdAt: -1 },
+      oldest: { createdAt: 1 },
+      priceAsc: { start_price: 1 },
+      priceDesc: { start_price: -1 },
+      trending: { view_count: -1 }
+    };
+
     const auctions = await Auction.find(query)
       .limit(Number(limit))
-      .sort({ createdAt: -1 });
+      .sort(sortOptions[sort] || sortOptions.latest)
 
     res.json({
       success: true,
@@ -91,6 +177,10 @@ router.get('/:id', async (req, res) => {
       });
     }
 
+    //Increase view count when a user views the product
+    auction.view_count += 1;
+    await auction.save();
+    
     res.json({
       success: true,
       data: auction
