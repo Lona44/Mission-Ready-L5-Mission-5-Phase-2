@@ -28,7 +28,9 @@ function App() {
         <Route path="/comparison" element={<ComparisonPage />} />
 
       </Routes>
+
       <Footer/>
+
     </BrowserRouter>
   )
 }
