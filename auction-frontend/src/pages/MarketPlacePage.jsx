@@ -155,10 +155,11 @@ export default function MarketplacePage() {
         <div className="marketplace-page__layout">
           {/* Sidebar - Filter Panel */}
           <aside className="marketplace-page__sidebar">
-            <FilterPanel 
-              onFilterChange={handleFilterChange}
-              auctions={auctions}
-            />
+           <FilterPanel
+  filters={filters}
+  onFilterChange={handleFilterChange}
+  auctions={auctions}
+/>
           </aside>
 
           {/* Main Content - Product Grid */}
