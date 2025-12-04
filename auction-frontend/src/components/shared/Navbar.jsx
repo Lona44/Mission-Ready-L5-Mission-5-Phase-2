@@ -4,7 +4,7 @@
  * Main navigation header for the application.
  * DO NOT modify without discussing in Teams chat first.
  */
-
+import { Link } from "react-router-dom";
 import "./Navbar.css";
 
 export default function Navbar() {
@@ -18,15 +18,15 @@ export default function Navbar() {
         </div>
 
         <div className="navbar__links">
-          <a href="/" className="navbar__link">
+          <Link to="/" className="navbar__link">
             Browse Marketplace
-          </a>
-          <a href="/stores" className="navbar__link">
+          </Link>
+          <Link to="/stores" className="navbar__link">
             Stores
-          </a>
-          <a href="/deals" className="navbar__link">
+          </Link>
+          <Link to="/deals" className="navbar__link">
             Deals
-          </a>
+          </Link>
         </div>
 
         <div className="navbar__actions">

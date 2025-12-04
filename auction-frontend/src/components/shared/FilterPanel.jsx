@@ -7,14 +7,7 @@
 import { useState, useEffect } from 'react';
 import './FilterPanel.css';
 
-export default function FilterPanel({ onFilterChange, auctions = [] }) {
-  const [filters, setFilters] = useState({
-    category: '',
-    location: '',
-    colour: '',
-    minPrice: '',
-    maxPrice: ''
-  });
+export default function FilterPanel({ filters, onFilterChange, auctions = [] }) {
 
   // Extract unique values from auctions for filter options
   const categories = [...new Set(auctions.map(a => a.category))].sort();
@@ -23,10 +16,9 @@ export default function FilterPanel({ onFilterChange, auctions = [] }) {
 
   const handleFilterChange = (filterName, value) => {
     const newFilters = {
-      ...filters,
-      [filterName]: value
+     ...filters,
+      [filterName]: value,
     };
-    setFilters(newFilters);
     onFilterChange(newFilters);
   };
 
@@ -36,9 +28,8 @@ export default function FilterPanel({ onFilterChange, auctions = [] }) {
       location: '',
       colour: '',
       minPrice: '',
-      maxPrice: ''
+      maxPrice: '',
     };
-    setFilters(clearedFilters);
     onFilterChange(clearedFilters);
   };
 

@@ -4,10 +4,10 @@
  * Main landing page with category navigation cards and cool auctions
  */
 
-import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import SearchBar from "../components/shared/SearchBar";
 import ProductCard from "../components/shared/ProductCard";
+import { useNavigate, Link } from "react-router-dom";
 import "./HomePage.css";
 
 export default function HomePage() {
@@ -253,13 +253,11 @@ export default function HomePage() {
         <div className="home-landing__section">
           <div className="home-landing__section-header">
             <h2>Cool auctions</h2>
-            <a href="/marketplace" className="home-landing__view-all">
+            <Link to="/marketplace" className="home-landing__view-all">
               View all →
-            </a>
+            </Link>
           </div>
-          <p className="home-landing__section-description">
-            
-          </p>
+          
 
           {/* Product Cards Grid */}
           {loading ? (
@@ -282,10 +280,8 @@ export default function HomePage() {
             </div>
           ) : (
             <div className="home-landing__empty">
-              <p>No cool auctions available at the moment. Check back soon!</p>
-              <p style={{ fontSize: '12px', marginTop: '8px', color: '#999' }}>
-                Debug: Loaded {coolAuctions.length} auctions
-              </p>
+              <p>No auctions available at the moment. </p>
+              
             </div>
           )}
         </div>
