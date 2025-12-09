@@ -92,21 +92,6 @@ export default function ComparisonPage() {
 
         <h1 className="comparison-title">Comparison Tool</h1>
 
-        <div className="search-row">
-          <input
-            type="text"
-            placeholder="Search all of trade me"
-            value={filters.q}
-            onChange={(e) => setFilters({ ...filters, q: e.target.value })}
-          />
-          <button className="search-btn">Search</button>
-          <button className="filter-btn-desktop">Filters</button>
-        </div>
-
-        <div className="comparison-note">
-          <strong>NOTE:</strong> Search for the item you want to compare <br />
-          Make sure to use the Filter system to find a product that fits your preference
-        </div>
         {/* --- Search + Filter Bar --- */}
         <div className="comparison-header">
           <input
@@ -132,7 +117,10 @@ export default function ComparisonPage() {
             Filter
           </button>
         </div>
-
+        <div className="comparison-note">
+          <strong>NOTE:</strong> Search for the item you want to compare <br />
+          Make sure to use the Filter system to find a product that fits your preference
+        </div>
         <div className="comparison-body">
 
           {/* Desktop filter panel */}
