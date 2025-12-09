@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import React, { useEffect, useState, useMemo } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
+
 import "./ComparisonPage.css";
 
 import DesktopFilterPanel from "../components/comparison/DesktopFilterPanel.jsx";
@@ -9,97 +10,116 @@ import ComparisonItem from "../components/comparison/ComparisonItem.jsx";
 import { getAuctions } from "../services/api.js";
 
 export default function ComparisonPage() {
-
-  // Detect mobile screen size
+  /* -----------------------------
+     DEVICE MODE
+  ------------------------------*/
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
-  // Track if the user has clicked "Apply Filters" in mobile mode
-  const [mobileApplied, setMobileApplied] = useState(false); // ★ IMPORTANT
-
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+
+  /* -----------------------------
+     URL PARAMS (idsString → idsArray)
+  ------------------------------*/
   const [searchParams] = useSearchParams();
-  const idsString = searchParams.get("ids");
-  const idsArray = idsString ? idsString.split(",") : [];
+  const idsString = searchParams.get("ids") || "";
 
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // Use memo to stabilize array
+  const idsArray = useMemo(() => {
+    return idsString ? idsString.split(",") : [];
+  }, [idsString]);
 
-  // Reset all filters
-  const clearAllFilters = () => {
-    setFilters({
-      q: "",
-      sort: "bestmatch",
-      location: [],
-      colour: [],
-      minPrice: "",
-      maxPrice: "",
-    });
 
-    // If user clears filters in mobile, the alert should disappear again
-    setMobileApplied(false); // ★ OPTIONAL but logical
-  };
-
-  // Filter state
-  const [filters, setFilters] = useState({
+  /* -----------------------------
+     FILTER STATE
+  ------------------------------*/
+  const defaultFilters = {
     q: "",
     sort: "bestmatch",
     location: [],
     colour: [],
     minPrice: "",
     maxPrice: "",
-  });
+  };
 
-  // Show/hide Mobile Filter Modal
+  const [filters, setFilters] = useState(defaultFilters);
+
+  // Reset filters
+  const clearAllFilters = () => {
+    setFilters(defaultFilters);
+    setMobileApplied(false);
+  };
+
+
+  /* -----------------------------
+     AUCTION DATA
+  ------------------------------*/
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+
+  /* -----------------------------
+     MOBILE FILTER MODAL
+  ------------------------------*/
   const [showMobileFilter, setShowMobileFilter] = useState(false);
+  const [mobileApplied, setMobileApplied] = useState(false);
 
-  /* Load auctions whenever filters or URL ids change */
+
+  /* -----------------------------
+     FETCH DATA ON FILTER / IDS CHANGE
+  ------------------------------*/
   useEffect(() => {
-    async function load() {
+    const load = async () => {
       setLoading(true);
 
       try {
         let res;
+
         if (idsArray.length > 0) {
-          // Comparison mode: fetch selected items
           res = await getAuctions({
             ids: idsArray.join(","),
             ...filters,
           });
         } else {
-          // Browsing mode: fetch all matching items
           res = await getAuctions({ ...filters });
         }
 
         setItems(res.data);
-      } catch (err) {
-        console.error("Comparison fetch error:", err);
+      } catch (error) {
+        console.error("Comparison fetch error:", error);
       }
 
       setLoading(false);
-    }
+    };
 
     load();
-  }, [idsString, filters]);
+  }, [idsString, filters]); // "idsArray" NOT needed because it comes from idsString
 
-  // Remove item from comparison list
+
+  /* -----------------------------
+     REMOVE ITEM FROM COMPARISON
+  ------------------------------*/
+  const navigate = useNavigate();
+
   const handleRemove = (removeId) => {
     const newIds = idsArray.filter((id) => id !== removeId);
     const newQuery = newIds.join(",");
 
     if (newIds.length === 0) {
-      window.location.href = `/comparison`;
+      navigate("/comparison");
     } else {
-      window.location.href = `/comparison?ids=${newQuery}`;
+      navigate(`/comparison?ids=${newQuery}`);
     }
   };
 
+
+  /* -----------------------------
+     RENDER
+  ------------------------------*/
   return (
     <div className="comparison-container">
       <div className="comparison-page">
@@ -113,10 +133,10 @@ export default function ComparisonPage() {
           <span className="current">Compare</span>
         </nav>
 
+        {/* Title + Filter Button */}
         <div className="comparison-title-row">
           <h1 className="comparison-title">Comparison Tool</h1>
 
-          {/* Filter button for Desktop or Mobile */}
           <div className="filter-button-wrapper">
             <button
               className="filter-btn-desktop main-filter"
@@ -136,18 +156,21 @@ export default function ComparisonPage() {
           </div>
         </div>
 
-        {/* Search bar */}
+        {/* Search Bar */}
         <div className="cmp-search-wrapper">
           <div className="cmp-search-input">
             <img src="/searchicon.png" className="cmp-search-icon" alt="search" />
+
             <input
               type="text"
               placeholder="Search all of trade me"
               value={filters.q}
-              onChange={(e) => setFilters({ ...filters, q: e.target.value })}
+              onChange={(e) =>
+                setFilters({ ...filters, q: e.target.value })
+              }
             />
 
-            {/* Filter chips */}
+            {/* Chips */}
             <div className="cmp-chip-container">
               {filters.location.map((loc) => (
                 <div key={loc} className="cmp-chip">
@@ -184,7 +207,7 @@ export default function ComparisonPage() {
               ))}
             </div>
 
-            {/* Clear filters button */}
+            {/* Clear Filters or Search */}
             <button
               className="cmp-search-btn"
               onClick={
@@ -200,15 +223,16 @@ export default function ComparisonPage() {
           </div>
         </div>
 
-        {/* NOTE SECTION */}
+
+        {/* Note */}
         <div className="comparison-note">
           <strong>NOTE:</strong> Search for the item you want to compare
           <br />
-          Make sure to use the Filter system to find a product that fits your
-          preference
+          Use Filters to find a product that fits your preference.
         </div>
 
-        {/* Desktop filter panel */}
+
+        {/* Desktop Filter Panel */}
         {!isMobile && (
           <div className="dfp-wrapper">
             <DesktopFilterPanel
@@ -226,39 +250,27 @@ export default function ComparisonPage() {
           {loading && <p>Loading...</p>}
 
           {!loading &&
-            items
-              .filter((item) => item)
-              .map((item, index) => (
-                <React.Fragment key={item._id}>
-                  
-                  <ComparisonItem
-                    product={item}
-                    onRemove={() => handleRemove(item._id)}
-                  />
+            items.filter(Boolean).map((item, index) => (
+              <React.Fragment key={item._id}>
+                <ComparisonItem
+                  product={item}
+                  onRemove={() => handleRemove(item._id)}
+                />
 
-                  {/* 
-                    ★ IMPORTANT:
-                    Only show the "matched products" alert in mobile mode
-                    AND only after the user clicked "Apply Filters"
-                    AND only after the first item (index === 0)
-                    AND only if there are matched items (items.length > 1)
-                  */}
-                  {isMobile &&
-                    mobileApplied &&
-                    index === 0 &&
-                    items.length > 1 && (
-                      <div
-                        className="dfp-alert"
-                        style={{ marginTop: "10px" }}
-                      >
-                        These are other products we found that matched what you are looking for!
-                      </div>
-                    )}
-                </React.Fragment>
-              ))}
+                {/* Mobile alert after Apply */}
+                {isMobile &&
+                  mobileApplied &&
+                  index === 0 &&
+                  items.length > 1 && (
+                    <div className="dfp-alert" style={{ marginTop: "10px" }}>
+                      These are other products we found that matched what you are looking for!
+                    </div>
+                  )}
+              </React.Fragment>
+            ))}
         </div>
 
-        {/* MOBILE FILTER MODAL */}
+        {/* Mobile Filter Modal */}
         {isMobile && showMobileFilter && (
           <MobileFilterModal
             filters={filters}
@@ -268,11 +280,12 @@ export default function ComparisonPage() {
 
             // ★ The key link: when mobile user clicks Apply Filters
             onApply={() => {
-              setMobileApplied(true);  // mark that user applied filters
+              setMobileApplied(true);
               setShowMobileFilter(false);
             }}
           />
         )}
+
       </div>
     </div>
   );
