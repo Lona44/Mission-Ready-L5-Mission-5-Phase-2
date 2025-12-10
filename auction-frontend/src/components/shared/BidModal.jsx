@@ -51,8 +51,8 @@ export default function BidModal({
 
   if (!isOpen) return null
 
-  // Round up to next whole dollar for minimum bid
-  const minBid = currentBid > 0 ? Math.ceil(currentBid) + 1 : Math.ceil(product.start_price)
+  // Round up to next whole dollar for minimum bid (must exceed current bid or start price)
+  const minBid = currentBid > 0 ? Math.ceil(currentBid) + 1 : Math.ceil(product.start_price) + 1
   const suggestedBid = minBid
 
   const handleSubmit = async (e) => {
