@@ -33,7 +33,9 @@ export default function WatchlistPage() {
       const data = await response.json();
       
       if (data.success) {
-        const items = data.data.map(item => item.auction_id);
+        const items = data.data
+          .map(item => item.auction_id)
+          .filter(auction => auction !== null);
         setWatchlistItems(items);
       }
     } catch (err) {
