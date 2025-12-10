@@ -6,13 +6,11 @@
 
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { getAuctionById, getQuestions, askQuestion } from '../services/api'
+import { getAuctionById, getQuestions, askQuestion, API_BASE_URL } from '../services/api'
 import Button from '../components/shared/Button'
 import BidModal from '../components/shared/BidModal'
 import { ClockIcon, CalendarIcon, BinocularsIcon, CheckIcon, UserAvatarIcon, SellerAvatarIcon } from '../components/shared/Icons'
 import './ProductDetailPage.css'
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
 
 // Helper function to calculate time remaining
 const getTimeRemaining = (endDate) => {

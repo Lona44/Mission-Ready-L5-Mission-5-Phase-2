@@ -6,7 +6,8 @@
  */
 
 // Detect API Base URL (Vite env OR fallback to localhost)
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+
+export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
 // Debug log for development
 console.log(">>> api.js LOADED, BASE URL =", API_BASE_URL);

@@ -4,9 +4,8 @@
  */
 
 import { useState, useEffect } from 'react'
+import { API_BASE_URL } from '../../services/api'
 import './BidModal.css'
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
 
 export default function BidModal({
   isOpen,
