@@ -58,6 +58,11 @@ export default function ProductDetailPage() {
   const [askingQuestion, setAskingQuestion] = useState(false)
   const [showQuestionInput, setShowQuestionInput] = useState(false)
 
+  // Watchlist state
+  const [isWatching, setIsWatching] = useState(false)
+  const [watchlistLoading, setWatchlistLoading] = useState(false)
+  const DEMO_USER_ID = '692f8df9790ef72851af2312'
+
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -115,6 +120,70 @@ export default function ProductDetailPage() {
 
     fetchQuestions()
   }, [product?._id])
+
+  // Check if user is watching this product
+  useEffect(() => {
+    if (!product?._id) return
+
+    const checkWatchlistStatus = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3000/api/watchlist/check?user_id=${DEMO_USER_ID}&auction_id=${product._id}`
+        )
+        const result = await response.json()
+        if (result.success) {
+          setIsWatching(result.isWatching)
+        }
+      } catch (err) {
+        console.error('Error checking watchlist status:', err)
+      }
+    }
+
+    checkWatchlistStatus()
+  }, [product?._id])
+
+  // Handle watchlist toggle
+  const handleWatchlistToggle = async () => {
+    if (watchlistLoading) return
+
+    setWatchlistLoading(true)
+    try {
+      if (isWatching) {
+        // Remove from watchlist
+        const response = await fetch('http://localhost:3000/api/watchlist', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            user_id: DEMO_USER_ID,
+            auction_id: product._id
+          })
+        })
+        const result = await response.json()
+        if (result.success) {
+          setIsWatching(false)
+        }
+      } else {
+        // Add to watchlist
+        const response = await fetch('http://localhost:3000/api/watchlist', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            user_id: DEMO_USER_ID,
+            auction_id: product._id
+          })
+        })
+        const result = await response.json()
+        if (result.success) {
+          setIsWatching(true)
+        }
+      }
+    } catch (err) {
+      console.error('Error updating watchlist:', err)
+      alert('Failed to update watchlist. Please try again.')
+    } finally {
+      setWatchlistLoading(false)
+    }
+  }
 
   // Handle asking a question
   const handleAskQuestion = async () => {
@@ -506,9 +575,16 @@ export default function ProductDetailPage() {
           </div>
 
           {/* Watchlist Button */}
-          <Button variant="warning" size="large" fullWidth style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-            <BinocularsIcon size={22} watching={false} />
-            Add to Watchlist
+          <Button
+            variant={isWatching ? "secondary" : "warning"}
+            size="large"
+            fullWidth
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+            onClick={handleWatchlistToggle}
+            disabled={watchlistLoading}
+          >
+            <BinocularsIcon size={22} watching={isWatching} />
+            {watchlistLoading ? 'Updating...' : isWatching ? 'Watching' : 'Add to Watchlist'}
           </Button>
 
           {/* Email Reminder & Watchlist Count */}
