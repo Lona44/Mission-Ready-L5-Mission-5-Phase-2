@@ -111,6 +111,69 @@ const auctionSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
+  // New timing fields
+  start_date: {
+    type: Date,
+    required: true,
+    default: Date.now
+  },
+  end_date: {
+    type: Date,
+    required: true,
+    validate: {
+      validator: function(value) {
+        return value > this.start_date;
+      },
+      message: 'end_date must be after start_date'
+    }
+  },
+
+  // Product details
+  condition: {
+    type: String,
+    required: true,
+    enum: ['New', 'Used', 'Refurbished'],
+    default: 'Used'
+  },
+  images: {
+    type: [String],
+    required: true,
+    validate: {
+      validator: function(value) {
+        return value && value.length > 0;
+      },
+      message: 'At least one image is required'
+    }
+  },
+
+  // Shipping options
+  shipping_options: [{
+    method: {
+      type: String,
+      required: true
+    },
+    location: {
+      type: String,
+      required: false
+    },
+    price: {
+      type: Number,
+      required: true,
+      min: 0
+    }
+  }],
+
+  // Payment methods
+  payment_methods: {
+    type: [String],
+    required: true,
+    validate: {
+      validator: function(value) {
+        return value && value.length > 0;
+      },
+      message: 'At least one payment method is required'
+    }
+  },
 
   // Seller reference
   seller_id: {

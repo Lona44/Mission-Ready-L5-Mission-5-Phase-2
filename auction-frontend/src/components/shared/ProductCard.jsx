@@ -1,6 +1,5 @@
 /**
  * ProductCard Component
-
  */
 
 import { useState } from "react";
@@ -29,26 +28,18 @@ export default function ProductCard({
     colour,
     start_price,
     reserve_price,
-    image,
-    images,
-  } = product;
+  image,
+  images,
+} = product;
 
-  // Support both image formats
-  const imageUrl = images && images.length > 0 ? images[0] : image;
+// === Unified image source ===
+// Prefer images[0] if available, fallback to image
+const imageUrl = images && images.length > 0 ? images[0] : image;
 
-  /**
-   * handleBookmarkClick - Add or remove from watchlist
-
-   * 1. Check if item is already in watchlist
-   * 2. If yes → Remove it (DELETE request)
-   * 3. If no → Add it (POST request)
-   * 4. Update UI immediately for better UX
-   */
-  const handleBookmarkClick = async (e) => {
-    e.stopPropagation(); // Prevent card click event
-
-    if (isUpdating) return; // Prevent double-clicks
-
+// Bookmark handler
+const handleBookmarkClick = async (e) => {
+  e.stopPropagation();
+  if (isUpdating) return;
     setIsUpdating(true);
 
     try {
@@ -122,6 +113,7 @@ export default function ProductCard({
 
   return (
     <div className="product-card">
+      {/* Bookmark button */}
       {showBookmark && (
         <button
           className="product-card__bookmark"
@@ -158,7 +150,8 @@ export default function ProductCard({
         </button>
       )}
 
-      <div className="product-card__image-placeholder">
+      {/* IMAGE SECTION FIXED */}
+      <div className="product-card__image-wrapper">
         {imageUrl ? (
           <img
             src={imageUrl}
@@ -170,6 +163,8 @@ export default function ProductCard({
             }}
           />
         ) : null}
+
+        {/* Placeholder (always here for onError fallback) */}
         <div
           className="product-card__placeholder-text"
           style={{ display: imageUrl ? "none" : "flex" }}
@@ -178,9 +173,10 @@ export default function ProductCard({
         </div>
       </div>
 
+      {/* CONTENT BELOW */}
       <div className="product-card__content">
         <div className="product-card__location">
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="#65605d">
+          <svg width="12" height="12" fill="#65605d">
             <circle cx="6" cy="6" r="2" />
           </svg>
           {location}
@@ -206,6 +202,7 @@ export default function ProductCard({
               ${start_price.toFixed(2)}
             </span>
           </div>
+
           {reserve_price && (
             <div className="product-card__reserve">
               Reserve: ${reserve_price.toFixed(2)}
