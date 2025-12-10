@@ -1,73 +1,193 @@
-import React from "react";
 import "./DesktopFilterPanel.css";
+import ComparisonItem from "./ComparisonItem";
 
-export default function DesktopFilterPanel({ filters, setFilters }) {
+export default function DesktopFilterPanel({
+  filters,
+  setFilters,
+  selectedProduct,
+  matchedProducts,
+  clearFilters,
+  isMobile = false,
+  closeModal,
+}) {
+  // ---- Toggle Location ----
+  const toggleLocation = (loc) => {
+    setFilters({
+      ...filters,
+      location: filters.location.includes(loc)
+        ? filters.location.filter((x) => x !== loc)
+        : [...filters.location, loc],
+    });
+  };
+
+  // ---- Toggle Colour ----
+  const toggleColour = (col) => {
+    setFilters({
+      ...filters,
+      colour: filters.colour.includes(col)
+        ? filters.colour.filter((x) => x !== col)
+        : [...filters.colour, col],
+    });
+  };
+
   return (
-    <div className="desktop-filter-panel">
+    <div className={`dfp-container ${isMobile ? "dfp-mobile" : ""}`}>
+      {/* Mobile modal close button */}
+      {isMobile && (
+        <button className="dfp-close-btn" onClick={closeModal}>
+          ×
+        </button>
+      )}
+      {/* LEFT SIDE – FILTERS */}
+      <div>
+        <h3 className="dfp-title">Comparison Filters</h3>
+       <div className="dfp-left">
+        {/* SORT BY */}
+        <div className="dfp-section">
+          <h4>Sort by</h4>
 
-      {/* Sort By */}
-      <section>
-        <h3>Sort by</h3>
-        <div className="chip-group">
-          {["bestmatch", "trending", "latest", "priceAsc", "priceDesc"].map((s) => (
+          <div className="dfp-sort-buttons">
             <button
-              key={s}
-              className={filters.sort === s ? "chip-selected" : "chip"}
-              onClick={() => setFilters({ ...filters, sort: s })}
+              className={`dfp-sort-btn ${
+                filters.sort === "bestmatch" ? "active" : ""
+              }`}
+              onClick={() => setFilters({ ...filters, sort: "bestmatch" })}
             >
-              {s}
+              Best Match
             </button>
-          ))}
-        </div>
-      </section>
 
-      {/* Location */}
-      <section>
-        <h3>Location</h3>
-        <div className="chip-group">
-          {["Auckland", "Wellington", "Hamilton", "Christchurch"].map((loc) => (
             <button
-              key={loc}
-              className={filters.location === loc ? "chip-selected" : "chip"}
-              onClick={() => setFilters({ ...filters, location: loc })}
+              className={`dfp-sort-btn ${
+                filters.sort === "trending" ? "active" : ""
+              }`}
+              onClick={() => setFilters({ ...filters, sort: "trending" })}
             >
-              {loc}
+              Trending
             </button>
-          ))}
-        </div>
-      </section>
 
-      {/* Colour */}
-      <section>
-        <h3>Colour</h3>
-        <div className="chip-group">
-          {["White", "Black", "Brown", "Grey", "Pink", "Blue"].map((c) => (
             <button
-              key={c}
-              className={filters.colour === c ? "chip-selected" : "chip"}
-              onClick={() => setFilters({ ...filters, colour: c })}
+              className={`dfp-sort-btn ${
+                filters.sort === "latest" ? "active" : ""
+              }`}
+              onClick={() => setFilters({ ...filters, sort: "latest" })}
             >
-              {c}
+              Latest
             </button>
-          ))}
+
+            <button
+              className={`dfp-sort-btn ${
+                filters.sort === "oldest" ? "active" : ""
+              }`}
+              onClick={() => setFilters({ ...filters, sort: "oldest" })}
+            >
+              Oldest
+            </button>
+
+            <button
+              className={`dfp-sort-btn ${
+                filters.sort === "priceAsc" ? "active" : ""
+              }`}
+              onClick={() => setFilters({ ...filters, sort: "priceAsc" })}
+            >
+              Price (Low - High)
+            </button>
+
+            <button
+              className={`dfp-sort-btn ${
+                filters.sort === "priceDesc" ? "active" : ""
+              }`}
+              onClick={() => setFilters({ ...filters, sort: "priceDesc" })}
+            >
+              Price (High - Low)
+            </button>
+          </div>
         </div>
-      </section>
 
-      {/* Price */}
-      <section>
-        <h3>Price</h3>
-        <input
-          type="number"
-          placeholder="Min"
-          onChange={(e) => setFilters({ ...filters, minPrice: e.target.value })}
-        />
-        <input
-          type="number"
-          placeholder="Max"
-          onChange={(e) => setFilters({ ...filters, maxPrice: e.target.value })}
-        />
-      </section>
+        <div className="dfp-divider"></div>
 
+        {/* LOCATION */}
+        <div className="dfp-section">
+          <h4>Location</h4>
+          <div className="dfp-group">
+            {["Auckland", "Wellington", "Hamilton", "Christchurch"].map(
+              (loc) => (
+                <label key={loc} className="dfp-checkbox">
+                  <input
+                    type="checkbox"
+                    checked={filters.location?.includes(loc)}
+                    onChange={() => toggleLocation(loc)}
+                  />
+                  {loc}
+                </label>
+              )
+            )}
+          </div>
+        </div>
+
+        <div className="dfp-divider"></div>
+
+        {/* COLOUR */}
+        <div className="dfp-section">
+          <h4>Colour</h4>
+          <div className="dfp-group">
+            {["White", "Black", "Brown", "Grey", "Pink", "Blue"].map((col) => (
+              <label key={col} className="dfp-checkbox">
+                <input
+                  type="checkbox"
+                  checked={filters.colour?.includes(col)}
+                  onChange={() => toggleColour(col)}
+                />
+                {col}
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <div className="dfp-divider"></div>
+
+        {/* PRICE RANGE */}
+        <div className="dfp-section">
+          <h4>Price <span className="dfp-price-value">${filters.minPrice || 0}</span>
+          </h4>
+          <input
+            type="range"
+            min="0"
+            max="500"
+            value={filters.minPrice || 0}
+            onChange={(e) =>
+              setFilters({ ...filters, minPrice: e.target.value })
+            }
+          />
+        </div>
+
+        <div className="dfp-divider"></div>
+
+        <button className="dfp-clear-btn" onClick={clearFilters}>
+          Clear filters
+        </button>
+        </div>
+      </div>
+
+      {/* RIGHT SIDE – SELECTED PRODUCT */}
+      <div className="dfp-right">
+        <h3 className="dfp-title">Selected Product</h3>
+
+        {/* Selected item */}
+        {selectedProduct && (
+          <ComparisonItem product={selectedProduct} onRemove={() => {}} />
+        )}
+
+        {/* Message */}
+        <div className="dfp-alert">
+          These are other products we found that matched what you are looking
+          for!
+        </div>
+
+        {/* Matched list */}
+        {matchedProducts.map((item) => (
+          <ComparisonItem key={item._id} product={item} onRemove={() => {}} />
+        ))}
+      </div>
     </div>
   );
 }

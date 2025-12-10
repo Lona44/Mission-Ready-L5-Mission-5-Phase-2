@@ -1,73 +1,147 @@
-import React from "react";
 import "./MobileFilterModal.css";
 
-export default function MobileFilterModal({ filters, setFilters, onClose }) {
+export default function MobileFilterModal({
+  filters,
+  setFilters,
+  onClose,
+  clearFilters,
+
+  // ★ Added: callback fired when user clicks "Apply Filters"
+  onApply,
+}) {
+
+  // Toggle Location (same logic as desktop)
+  const toggleLocation = (loc) => {
+    setFilters({
+      ...filters,
+      location: filters.location.includes(loc)
+        ? filters.location.filter((x) => x !== loc)
+        : [...filters.location, loc],
+    });
+  };
+
+  // Toggle Colour (same logic as desktop)
+  const toggleColour = (col) => {
+    setFilters({
+      ...filters,
+      colour: filters.colour.includes(col)
+        ? filters.colour.filter((x) => x !== col)
+        : [...filters.colour, col],
+    });
+  };
+
   return (
-    <div className="mobile-filter-modal">
-        <div className="modal-content">
+    <div className="mfm-overlay">
+      <div className="mfm-modal">
 
-            <div className="modal-header">
-                <h2>Filter</h2>
-                <button onClick={onClose}>✕</button>
-            </div>
-
-            <div className="modal-body">
+        {/* Header */}
+        <div className="mfm-header">
+          <h3>Filters</h3>
+          <button className="mfm-close-btn" onClick={onClose}>✕</button>
         </div>
 
-        {/* Sort by */}
-        <section>
-          <h3>Sort by</h3>
-          <div className="chip-group">
-            {["bestmatch", "trending", "latest", "priceAsc", "priceDesc"].map((s) => (
-              <button
-                className={filters.sort === s ? "chip-selected" : "chip"}
-                onClick={() => setFilters({ ...filters, sort: s })}
-              >
-                {s}
-              </button>
-            ))}
+        <div className="mfm-content">
+
+          {/* SORT BY */}
+          <div className="mfm-section">
+            <h4>Sort by</h4>
+
+            <div className="mfm-sort-options">
+              {["bestmatch", "trending", "latest", "priceAsc", "priceDesc"].map((s) => (
+                <button
+                  key={s}
+                  className={`mfm-sort-btn ${filters.sort === s ? "active" : ""}`}
+                  onClick={() => setFilters({ ...filters, sort: s })}
+                >
+                  {s}
+                </button>
+              ))}
+            </div>
           </div>
-        </section>
 
-        {/* Location */}
-        <section>
-          <h3>Location</h3>
-          {["Auckland", "Wellington", "Hamilton", "Christchurch"].map((loc) => (
-            <label key={loc}>
-              <input
-                type="radio"
-                name="location"
-                value={loc}
-                checked={filters.location === loc}
-                onChange={() => setFilters({ ...filters, location: loc })}
-              />
-              {loc}
-            </label>
-          ))}
-        </section>
+          <hr />
 
-        {/* Colour */}
-        <section>
-          <h3>Colour</h3>
-          {["White", "Black", "Brown", "Grey", "Pink", "Blue"].map((c) => (
-            <label key={c}>
-              <input
-                type="radio"
-                name="colour"
-                value={c}
-                checked={filters.colour === c}
-                onChange={() => setFilters({ ...filters, colour: c })}
-              />
-              {c}
-            </label>
-          ))}
-        </section>
+          {/* LOCATION CHECKBOXES */}
+          <div className="mfm-section">
+            <h4>Location</h4>
 
+            <div className="mfm-checkbox-grid">
+              {["Auckland", "Wellington", "Hamilton", "Christchurch"].map((loc) => (
+                <label key={loc} className="mfm-checkbox-item">
+                  <input
+                    type="checkbox"
+                    checked={filters.location.includes(loc)}
+                    onChange={() => toggleLocation(loc)}
+                  />
+                  {loc}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <hr />
+
+          {/* COLOUR CHECKBOXES */}
+          <div className="mfm-section">
+            <h4>Colour</h4>
+
+            <div className="mfm-checkbox-grid">
+              {["White", "Black", "Brown", "Grey", "Pink", "Blue"].map((col) => (
+                <label key={col} className="mfm-checkbox-item">
+                  <input
+                    type="checkbox"
+                    checked={filters.colour.includes(col)}
+                    onChange={() => toggleColour(col)}
+                  />
+                  {col}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <hr />
+
+          {/* PRICE RANGE */}
+          <h3 className="mfp-section-title">
+            Price <span className="mfp-price-value">${filters.minPrice || 0}</span>
+          </h3>
+
+          {/* Slider for price */}
+          <input
+            type="range"
+            min="0"
+            max="500"
+            value={filters.minPrice || 0}
+            className="mfp-price-slider"
+            onChange={(e) =>
+              setFilters({ ...filters, minPrice: Number(e.target.value) })
+            }
+          />
+
+          <hr />
+
+          {/* CLEAR FILTERS */}
+          <div className="mfm-clear-row">
+            <button className="mfm-clear-btn" onClick={clearFilters}>
+              Clear filters
+            </button>
+          </div>
+        </div>
+
+        {/* APPLY FILTERS BUTTON */}
+        <div className="mfm-footer">
+
+          {/*
+            ★ IMPORTANT:
+            This calls onApply() instead of onClose()
+            So parent component knows filters were applied.
+          */}
+
+          <button className="mfm-apply-btn" onClick={onApply}>
+            Apply Filters
+          </button>
+        </div>
       </div>
-
-      <button className="apply-btn" onClick={onClose}>
-        Apply Filter
-      </button>
     </div>
   );
 }

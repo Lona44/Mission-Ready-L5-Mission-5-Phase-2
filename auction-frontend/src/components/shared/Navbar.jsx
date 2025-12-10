@@ -30,7 +30,7 @@ export default function Navbar() {
         </div>
 
         <div className="navbar__actions">
-          <Link to="/compare" className="navbar__icon-btn" aria-label="Compare">
+          <Link to="/comparison" className="navbar__icon-btn" aria-label="Compare">
             <svg
               width="20"
               height="16"

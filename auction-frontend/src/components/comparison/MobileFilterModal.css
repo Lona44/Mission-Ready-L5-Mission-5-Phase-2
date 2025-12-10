@@ -1,112 +1,181 @@
-
-.mobile-filter-modal {
+/* --- Overlay background --- */
+.mfm-overlay {
   position: fixed;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.4);
-  z-index: 1000;
-
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 9999;
   display: flex;
   justify-content: center;
   align-items: flex-end;
 }
 
-
-.mobile-filter-modal .modal-body-wrapper {
+/* --- Bottom slide-up panel --- */
+.mfm-modal {
   width: 100%;
-}
-
-
-.mobile-filter-modal .modal-content {
-  background-color: #fff;
-  max-height: 90vh;
-  width: 100%;
-  border-radius: 10px 10px 0 0;
-  padding: 12px 16px 70px;
-  overflow-y: auto;
-}
-
-/* Header */
-.mobile-filter-modal .modal-header {
+  max-height: 85%;
+  background: #ffffff;
+  border-radius: 16px 16px 0 0;
+  padding: 18px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #e5e5e5;
+  flex-direction: column;
+  overflow-y: auto;
+  animation: slideUp 0.25s ease-out;
 }
 
-.mobile-filter-modal .modal-header h2 {
-  font-size: 16px;
+/* Slide animation */
+@keyframes slideUp {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* --- Header --- */
+.mfm-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.mfm-header h3 {
+  font-size: 20px;
+  font-weight: 700;
   margin: 0;
 }
 
-.mobile-filter-modal .modal-header button {
-  background: none;
+.mfm-close-btn {
   border: none;
-  font-size: 18px;
+  background: none;
+  font-size: 22px;
   cursor: pointer;
+  color: #444;
 }
 
-
-.mobile-filter-modal section {
-  margin-top: 12px;
+/* --- Content sections --- */
+.mfm-content {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 5px;
 }
 
-.mobile-filter-modal h3 {
-  margin: 0 0 6px;
-  font-size: 13px;
+.mfm-section {
+  margin-bottom: 18px;
+}
+
+.mfm-section h4 {
+  font-size: 16px;
   font-weight: 600;
+  margin-bottom: 10px;
 }
 
+/* Divider lines */
+.mfm-content hr {
+  border: none;
+  border-top: 1px solid #e0e0e0;
+  margin: 12px 0;
+}
 
-.mobile-filter-modal .chip-group {
+/* --- Sort Buttons --- */
+.mfm-sort-options {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 8px;
 }
 
-.mobile-filter-modal .chip,
-.mobile-filter-modal .chip-selected {
-  padding: 4px 10px;
-  border-radius: 999px;
-  border: 1px solid #d4d4d4;
-  background-color: #fff;
-  font-size: 12px;
+.mfm-sort-btn {
+  padding: 8px 14px;
+  border-radius: 20px;
+  background: #f2f2f2;
+  border: 1px solid #ddd;
+  font-size: 14px;
   cursor: pointer;
 }
 
-.mobile-filter-modal .chip-selected {
-  border-color: #0079d3;
-  background-color: #0079d3;
-  color: #fff;
+.mfm-sort-btn.active {
+  background: #f4b400;
+  color: white;
+  border-color: #f4b400;
 }
 
+/* --- Checkbox Grid --- */
+.mfm-checkbox-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}
 
-.mobile-filter-modal label {
+.mfm-checkbox-item {
+  font-size: 14px;
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 13px;
-  margin-bottom: 4px;
 }
 
+.mfm-checkbox-item input {
+  margin-right: 6px;
+}
 
-.mobile-filter-modal .apply-btn {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 48px;
+/* --- Price Inputs --- */
+
+.mfm-price-row input {
+  width: 50%;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+/* --- Clear Filters --- */
+.mfm-clear-row {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.mfm-clear-btn {
   border: none;
-  background-color: #0079d3;
-  color: #fff;
+  background: none;
+  color: #0077cc;
+  text-decoration: underline;
   font-size: 15px;
+  cursor: pointer;
+}
+
+/* --- Footer apply button --- */
+.mfm-footer {
+  padding-top: 12px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.mfm-apply-btn {
+  width: 100%;
+  background: #0077cc;
+  color: white;
+  padding: 12px 0;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
 }
 
+/* Price title + value */
+.mfp-price-value {
+  font-weight: 600;
+  margin-left: 6px;
+  color: #333;
+}
 
-@media (min-width: 769px) {
-  .mobile-filter-modal {
-    display: none;
-  }
+/* Slider styling */
+.mfp-price-slider {
+  width: 100%;
+  margin: 10px 0 20px;
+  accent-color: #2c82d9; /* TradeMe blue */
+  height: 6px;
 }
