@@ -1,0 +1,66 @@
+/**
+ * SecondaryNavbar Styles
+
+ */
+
+.secondary-navbar {
+  background: #ffffff;
+  border-bottom: 1px solid #D9D9D9;
+  padding: 5px;
+  height: 41px;
+
+}
+
+.secondary-navbar__container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 24px;
+}
+
+.secondary-navbar__links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  height: 100%;
+left :192px ;
+}
+
+.secondary-navbar__link {
+  color: #44413d;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  transition: color 0.2s;
+}
+
+.secondary-navbar__link:hover {
+  color: #007acd;
+}
+
+.secondary-navbar__link--stores {
+  margin-left: auto;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .secondary-navbar {
+    display: none; /* Hide on mobile to save space */
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .secondary-navbar__links {
+    gap: 16px;
+  }
+  
+  .secondary-navbar__link {
+    font-size: 13px;
+  }
+}

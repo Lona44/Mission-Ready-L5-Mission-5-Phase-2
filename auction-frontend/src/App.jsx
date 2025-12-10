@@ -10,6 +10,7 @@
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Navbar from './components/shared/Navbar'
+import SecondaryNavbar from './components/shared/SecondaryNavbar'
 import HomePage from './pages/HomePage'
 import ProductDetailPage from './pages/ProductDetailPage'
 import ComparisonPage from './pages/ComparisonPage'
@@ -21,6 +22,7 @@ function App() {
 
     <BrowserRouter>
       <Navbar />
+      <SecondaryNavbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/marketplace" element={<MarketplacePage />} />
