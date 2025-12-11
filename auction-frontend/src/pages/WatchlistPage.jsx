@@ -255,12 +255,11 @@ export default function WatchlistPage() {
                             ${product.buy_now_price.toFixed(2)}
                           </div>
                         </div>
+                        
                       )}
+                        
                     </div>
-                  </div>
-
-                  {/* Actions */}
-                  <div className="watchlist-item__actions">
+                     <div className="watchlist-item__actions">
                     <button 
                       className="watchlist-item__action-btn"
                       onClick={(e) => {
@@ -270,10 +269,15 @@ export default function WatchlistPage() {
                     >
                       Place bid
                     </button>
+        
                     <button className="watchlist-item__action-btn">
                       Add note
                     </button>
                   </div>
+                  </div>
+
+                  {/* Actions */}
+               
                 </div>
               );
             })}

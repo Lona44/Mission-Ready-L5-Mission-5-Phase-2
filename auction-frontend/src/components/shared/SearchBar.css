@@ -64,12 +64,12 @@
 
 .search-bar__button {
   background-color: #9d9d9d;
-  color: #ffffff;
+  color: #000000;
   border: none;
   padding: 10px 20px;
   border-radius: 50px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 900;
   cursor: pointer;
   transition: background-color 0.2s;
   flex-shrink: 0;
@@ -84,10 +84,31 @@
   cursor: not-allowed;
 }
 
+
 /* Responsive */
 @media (max-width: 768px) {
+  .search-bar {
+    width: 395px;
+    height: 108px;
+    margin: 0 auto 24px;
+  }
+ 
+
+  .search-bar__container {
+    height: 58px;
+    padding: 4px 4px 4px 16px;
+    border-radius: 50px;
+  }
+
   .search-bar__button {
+    width: 85px;
+    height: 50px;
     padding: 8px 16px;
     font-size: 12px;
+    border-radius: 50px;
+  }
+
+  .search-bar__input {
+    font-size: 13px;
   }
 }

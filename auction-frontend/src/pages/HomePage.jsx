@@ -19,8 +19,8 @@ import { useNavigate, Link } from "react-router-dom";
 import "./HomePage.css";
 
 // STATE MANAGEMENT - React hooks to store data
-  // coolAuctions: stores the auction data we get from the backend
-  // loading: shows loading spinner while fetching data
+// coolAuctions: stores the auction data we get from the backend
+// loading: shows loading spinner while fetching data
 export default function HomePage() {
   const navigate = useNavigate();
   const [coolAuctions, setCoolAuctions] = useState([]);
@@ -148,7 +148,6 @@ export default function HomePage() {
       ),
       path: "/marketplace?category=Services",
     },
-   
   ];
 
   // Fetch cool auctions on component mount
@@ -157,12 +156,11 @@ export default function HomePage() {
   }, []);
   /**
    * useEffect - React hook that runs when component loads
-   * 
+   *
    * EXPLANATION:
    * This is like saying "when the page first appears, go fetch the auction data"
    * The empty [] means it only runs once when the page loads
    */
-
 
   //fetchCoolAuctions - THE MAIN API FUNCTION
 
@@ -180,45 +178,94 @@ export default function HomePage() {
     try {
       // start loading state
       setLoading(true);
-      console.log('Fetching cool auctions...');
+      console.log("Fetching cool auctions...");
       // This sends a GET request to our Express server
       // The server is running on localhost:3000
       // We're asking for 6 auctions using the ?limit=6 query parameter
-      const response = await fetch('http://localhost:3000/api/auctions?limit=6');
-      console.log('Response status:', response.status);
-      
+      const response = await fetch(
+        "http://localhost:3000/api/auctions?limit=6"
+      );
+      console.log("Response status:", response.status);
 
-      // checks if the response was successfull 
+      // checks if the response was successfull
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       // converts the response to json format
-      // the backend sends data in this format : 
+      // the backend sends data in this format :
       // { success: true, data: [array of auctions] }
       const result = await response.json();
-      console.log('Fetched result:', result);
-      
+      console.log("Fetched result:", result);
+
       // Extract the data array from the API response
       const auctions = result.data || [];
-      console.log('Number of auctions:', auctions.length);
-      
+      console.log("Number of auctions:", auctions.length);
+
       // When we call setCoolAuctions, React knows to re-render the component
       // This causes the ProductCards to appear on screen with the new data
       // this updates the front end display
       setCoolAuctions(auctions); // stores data in react state
-    } catch (error) { //error catching
-      console.error('Error fetching cool auctions:', error);
+    } catch (error) {
+      //error catching
+      console.error("Error fetching cool auctions:", error);
       setCoolAuctions([]);
     } finally {
       setLoading(false);
     }
   };
+  // STATE - Store different sections of auctions
+  const [topPicks, setTopPicks] = useState([]);
+  const [recommendedBeds, setRecommendedBeds] = useState([]);
 
+  // Fetch all sections on component mount
+  useEffect(() => {
+    fetchCoolAuctions();
+    fetchTopPicks();
+    fetchRecommendedBeds();
+  }, []);
+
+  // Fetch top picks - Trending items (by view count)
+  const fetchTopPicks = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:3000/api/auctions?limit=3&sort=trending"
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      setTopPicks(result.data || []);
+    } catch (error) {
+      console.error("Error fetching top picks:", error);
+      setTopPicks([]);
+    }
+  };
+
+  // Fetch recommended beds - Filter by Furniture category
+  const fetchRecommendedBeds = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:3000/api/auctions?limit=3&category=Furniture"
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      setRecommendedBeds(result.data || []);
+    } catch (error) {
+      console.error("Error fetching recommended beds:", error);
+      setRecommendedBeds([]);
+    }
+  };
 
   /**
    * handleSearch - Handles user search input
-   * 
+   *
    * WHEN USER TYPES AND CLICKS SEARCH:
    * Takes the search query and navigates to marketplace page
    * The marketplace page will then filter results based on this query
@@ -226,14 +273,14 @@ export default function HomePage() {
   const handleSearch = (query) => {
     navigate(`/marketplace?q=${encodeURIComponent(query)}`);
   };
-// when user clicks a catogary it navigates to the /marketplace?category=Electronics
+  // when user clicks a catogary it navigates to the /marketplace?category=Electronics
 
   const handleCategoryClick = (path) => {
     navigate(path);
   };
 
   const handleBookmarkClick = (productId) => {
-    console.log('Add to watchlist:', productId);
+    console.log("Add to watchlist:", productId);
   };
 
   // handles clicking on product card e.g _ user clicks on product it will navigate to product detail page /product/123
@@ -242,7 +289,7 @@ export default function HomePage() {
   };
 
   return (
-  //  ui render
+    //  ui render
     <main className="home-landing">
       <div className="container">
         {/* Hero Section */}
@@ -285,18 +332,18 @@ export default function HomePage() {
               View all →
             </Link>
           </div>
-          
 
-          {/* Product Cards Grid */}
           {loading ? (
-            <div className="home-landing__loading">Loading cool auctions...</div>
+            <div className="home-landing__loading">
+              Loading cool auctions...
+            </div>
           ) : coolAuctions.length > 0 ? (
             <div className="home-landing__products">
               {coolAuctions.map((product) => (
                 <div
                   key={product._id}
                   onClick={() => handleProductClick(product._id)}
-                  style={{ cursor: 'pointer' }}
+                  style={{ cursor: "pointer" }}
                 >
                   <ProductCard
                     product={product}
@@ -308,16 +355,81 @@ export default function HomePage() {
             </div>
           ) : (
             <div className="home-landing__empty">
-              <p>No auctions available at the moment. </p>
-              
+              <p>No auctions available at the moment.</p>
+            </div>
+          )}
+        </div>
+
+        {/* Top Picks Section */}
+        <div className="home-landing__section">
+          <div className="home-landing__section-header">
+            <h2>Top picks For You</h2>
+            <Link
+              to="/marketplace?sort=trending"
+              className="home-landing__view-all"
+            >
+              View all →
+            </Link>
+          </div>
+
+          {topPicks.length > 0 ? (
+            <div className="home-landing__products">
+              {topPicks.map((product) => (
+                <div
+                  key={product._id}
+                  onClick={() => handleProductClick(product._id)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <ProductCard
+                    product={product}
+                    showBookmark={true}
+                    onBookmarkClick={handleBookmarkClick}
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="home-landing__empty">
+              <p>No top picks available right now.</p>
+            </div>
+          )}
+        </div>
+
+        {/* Recommended Beds Section */}
+        <div className="home-landing__section">
+          <div className="home-landing__section-header">
+            <h2>Recommended in Beds</h2>
+            <Link
+              to="/marketplace?category=Furniture"
+              className="home-landing__view-all"
+            >
+              View all →
+            </Link>
+          </div>
+
+          {recommendedBeds.length > 0 ? (
+            <div className="home-landing__products">
+              {recommendedBeds.map((product) => (
+                <div
+                  key={product._id}
+                  onClick={() => handleProductClick(product._id)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <ProductCard
+                    product={product}
+                    showBookmark={true}
+                    onBookmarkClick={handleBookmarkClick}
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="home-landing__empty">
+              <p>No recommended beds found.</p>
             </div>
           )}
         </div>
       </div>
-      
     </main>
-    
-
-    
   );
 }

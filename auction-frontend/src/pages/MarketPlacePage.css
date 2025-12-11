@@ -1,10 +1,10 @@
 /**
- * MarketplacePage Styles
- * 
+ * --------------------------------------------------
+ * MARKETPLACE PAGE — BASE STYLES
+ * --------------------------------------------------
  */
-
 .marketplace-page {
-  background-color: #F5F5F5;
+  background-color: #f5f5f5;
   min-height: calc(100vh - 80px);
   padding: 32px 0 48px;
 }
@@ -43,11 +43,67 @@
   text-align: center;
   margin-top: 32px;
   padding-top: 32px;
-  border-top: 1px solid #D9D9D9;
+  border-top: 1px solid #d9d9d9;
 }
 
-/* Responsive Layout */
-@media (min-width: 768px) {
+/**
+ * --------------------------------------------------
+ * RESPONSIVE STYLES
+ * --------------------------------------------------
+ */
+
+/* Small screens: mobile */
+@media (max-width: 767px) {
+  .marketplace-page {
+    padding: 24px 0 48px;
+  }
+
+  .marketplace-page__header {
+    padding: 0 21px;
+    margin-top: 126px;
+  }
+
+  .marketplace-page__title {
+    font-size: 24px;
+  }
+
+  .marketplace-page__subtitle {
+    font-size: 14px;
+  }
+
+  /* Mobile Search Bar */
+  .marketplace-page .search-bar {
+    width: 395px;
+    height: 108px;
+    margin: 0 auto 24px;
+  }
+
+  /* Mobile Content Padding */
+  .marketplace-page__content {
+    padding: 0 24px;
+  }
+
+  /* Product Grid: single column */
+  .product-grid__container {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .product-grid__item {
+    width: 295.83px;
+    height: 513px;
+    margin: 0 auto;
+  }
+
+  .product-grid__item .product-card {
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+  }
+}
+
+/* Medium screens: tablets */
+@media (min-width: 768px) and (max-width: 1023px) {
   .marketplace-page {
     padding: 40px 0 64px;
   }
@@ -55,8 +111,18 @@
   .marketplace-page__title {
     font-size: 32px;
   }
+
+  .marketplace-page__layout {
+    grid-template-columns: 1fr;
+  }
+
+  /* Two-column product grid */
+  .product-grid__container {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
+/* Large screens: desktops */
 @media (min-width: 1024px) {
   .marketplace-page__layout {
     grid-template-columns: 280px 1fr;
@@ -68,6 +134,7 @@
   }
 }
 
+/* Extra-large screens: wide desktops */
 @media (min-width: 1280px) {
   .marketplace-page__layout {
     grid-template-columns: 320px 1fr;
