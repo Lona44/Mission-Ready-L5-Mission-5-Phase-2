@@ -570,11 +570,11 @@ export default function ProductDetailPage() {
           {/* Pricing Container with Button & Bid Info */}
           <div className="product-pricing">
             <p className="pricing-label">
-              {(product.bid_count || 0) > 0 ? 'Current bid' : 'Starting price'}
+              {(product.current_bid || 0) > 0 ? 'Current bid' : 'Starting price'}
             </p>
             <p className="pricing-amount">
-              ${(product.bid_count || 0) > 0
-                ? (product.current_bid || 0).toFixed(2)
+              ${(product.current_bid || 0) > 0
+                ? product.current_bid.toFixed(2)
                 : product.start_price.toFixed(2)}
             </p>
 
