@@ -1,15 +1,18 @@
 /**
+ * --------------------------------------------------
  * HomePage Landing Styles
- * 
+ * --------------------------------------------------
  */
 
 .home-landing {
-  background-color: #F5F5F5;
+  background-color: #f5f5f5;
   min-height: calc(100vh - 80px);
   padding: 40px 0 64px;
 }
 
-/* Hero Section */
+/* --------------------------------------------------
+ * HERO SECTION
+ * -------------------------------------------------- */
 .home-landing__hero {
   text-align: center;
   margin-bottom: 32px;
@@ -28,38 +31,34 @@
   margin: 0;
 }
 
-/* Search Bar Container */
+/* --------------------------------------------------
+ * SEARCH BAR
+ * -------------------------------------------------- */
 .home-landing__search {
   max-width: 1056px;
   height: 56px;
   margin: 0 auto 48px;
-  border: 1px;
 }
-
-
 
 .search-bar_button {
   width: 100px;
   height: 40px;
-  
-
 }
 
-/* Category Cards Grid */
+/* --------------------------------------------------
+ * CATEGORY CARDS GRID
+ * -------------------------------------------------- */
 .home-landing__categories {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 16px;
-  /* max-width: 1040px; */
-  margin: 0 auto 50px ;
+  margin: 0 auto 50px;
   width: 1056px;
 }
 
 .category-card {
-  top: 200px;
-  /* left: 836px; */
   background: #ffffff;
-  border: 1px solid #D9D9D9;
+  border: 1px solid #d9d9d9;
   border-radius: 8px;
   padding: 24px;
   display: flex;
@@ -67,11 +66,10 @@
   gap: 16px;
   cursor: pointer;
   transition: all 0.2s ease;
-  text-align:left;
+  text-align: left;
   font-size: 18px;
   font-weight: 600;
   color: #44413d;
-  /* width: 192px; */
   height: 56px;
 }
 
@@ -90,12 +88,7 @@
   flex: 1;
 }
 
-.category-card__arrow {
-  font-size: 24px;
-  color: #007acd;
-  margin-left: auto;
-}
-
+/* Highlighted/Primary browse card */
 .category-card--browse {
   background: #ffffff;
   border: 2px solid #007acd;
@@ -107,14 +100,12 @@
   color: #ffffff;
 }
 
-.category-card--browse:hover .category-card__arrow {
-  color: #ffffff;
-}
-
-/* Cool Auctions Section */
+/* --------------------------------------------------
+ * SECTIONS (Cool Auctions, Top Picks, Beds)
+ * -------------------------------------------------- */
 .home-landing__section {
   max-width: 1056px;
-  margin: 0 auto;
+  margin: 0 auto 48px;
 }
 
 .home-landing__section-header {
@@ -136,7 +127,7 @@
   font-size: 14px;
   font-weight: 600;
   text-decoration: none;
-  transition: color 0.2s;
+  transition: 0.2s;
 }
 
 .home-landing__view-all:hover {
@@ -147,19 +138,23 @@
 .home-landing__section-description {
   color: #65605d;
   font-size: 14px;
-  margin: 0 0 24px 0;
+  margin-bottom: 24px;
 }
 
-/* Product Cards Grid */
+/* --------------------------------------------------
+ * PRODUCT GRID
+ * -------------------------------------------------- */
 .home-landing__products {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
   margin-top: 24px;
-  width: 320px;
+  width: 100%; /* Previously 320px which broke layout */
 }
 
-/* Loading and Empty States */
+/* --------------------------------------------------
+ * LOADING / EMPTY STATES
+ * -------------------------------------------------- */
 .home-landing__loading,
 .home-landing__empty {
   text-align: center;
@@ -172,12 +167,15 @@
   margin: 0;
 }
 
-/* Responsive Design */
+/* --------------------------------------------------
+ * RESPONSIVE DESIGN
+ * -------------------------------------------------- */
 @media (max-width: 768px) {
   .home-landing {
     padding: 24px 0 48px;
   }
 
+  /* Hero */
   .home-landing__hero {
     margin-bottom: 24px;
   }
@@ -190,42 +188,48 @@
     font-size: 14px;
   }
 
+  /* Search */
   .home-landing__search {
     margin-bottom: 32px;
   }
 
+  /* Categories */
   .home-landing__categories {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 12px;
-    margin-bottom: 48px;
+    width: 100%;
+    margin-bottom: 8px;
   }
 
   .category-card {
     padding: 20px;
     font-size: 16px;
+    width: 100%;
+    height: auto;
   }
 
   .category-card__icon {
     font-size: 28px;
   }
 
+  /* Section titles */
   .home-landing__section-header h2 {
     font-size: 20px;
   }
 
-  /* Single column for products on mobile */
+  /* Products on mobile */
   .home-landing__products {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 16px;
   }
 }
 
+/* TABLET */
 @media (min-width: 769px) and (max-width: 1024px) {
   .home-landing__categories {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  /* Two columns for products on tablet */
   .home-landing__products {
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
