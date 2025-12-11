@@ -8,13 +8,11 @@ import './SecondaryNavbar.css';
 
 export default function SecondaryNavbar() {
   const categories = [
-    { name: 'Marketplace', path: '/marketplace' },
-    { name: 'Property', path: '/marketplace?category=Property' },
-    { name: 'Motors', path: '/marketplace?category=Motors' },
-    { name: 'Jobs', path: '/marketplace?category=Jobs' },
-    { name: 'Services', path: '/marketplace?category=Services' },
+    { name: 'Browse Marketplace', path: '/marketplace' },
+    { name: 'Stores', path: '/stores' },
+    { name: 'Deals', path: '/deals' },
+    { name: 'Book a courier', path: '/courier' },
   ];
-
   return (
     <nav className="secondary-navbar">
       <div className="secondary-navbar__container">
@@ -31,7 +29,7 @@ export default function SecondaryNavbar() {
         </div>
         
         <Link to="/stores" className="secondary-navbar__link secondary-navbar__link--stores">
-          Stores
+          List an item
         </Link>
       </div>
     </nav>
